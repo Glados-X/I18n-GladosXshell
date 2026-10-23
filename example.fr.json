@@ -1,0 +1,18 @@
+{
+  "meta": {
+    "code": "fr",
+    "name": "French",
+    "nativeName": "Français",
+    "rtl": false,
+    "version": "1.0.0"
+  },
+  "translations": {
+    "Ready": "Prêt",
+    "Connect": "Se connecter",
+    "Disconnect": "Se déconnecter",
+    "Copy": "Copier",
+    "Paste": "Coller",
+    "Settings": "Paramètres",
+    "A language pack can't be larger than 4 MB": "Un pack de langue ne peut pas dépasser 4 Mo"
+  }
+}

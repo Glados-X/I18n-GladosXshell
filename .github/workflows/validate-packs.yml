@@ -1,0 +1,45 @@
+name: Validate language packs
+
+# Runs the pack validator over every pack in content/ and packs/ on pushes and
+# pull requests that touch the packs, the validator or this workflow. Failing
+# packs (bad JSON, missing meta fields, an invalid code, non-string translation
+# values, or an empty translations object) fail the check.
+
+on:
+  push:
+    paths:
+      - 'content/**'
+      - 'packs/**'
+      - 'scripts/**'
+      - '.github/workflows/validate-packs.yml'
+  pull_request:
+    paths:
+      - 'content/**'
+      - 'packs/**'
+      - 'scripts/**'
+      - '.github/workflows/validate-packs.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Validate every pack
+        run: |
+          checked=0
+          for f in content/*.json packs/*.json; do
+            [ -f "$f" ] || continue
+            node scripts/check-pack.mjs "$f"
+            checked=$((checked + 1))
+          done
+          echo "Validated $checked pack(s)."
+          if [ "$checked" -eq 0 ]; then
+            echo "No packs found under content/ or packs/."
+            exit 1
+          fi
